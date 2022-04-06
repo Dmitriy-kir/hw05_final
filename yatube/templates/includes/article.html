@@ -1,0 +1,23 @@
+{% load thumbnail %}
+{% with request.resolver_match.view_name as view_name %}
+<ul>
+  <li>
+    Автор: {{ post.author.get_full_name }}
+    <a href={% url 'posts:profile' post.author %}>Все посты пользователя</a>
+  </li> 
+  <li>Дата публикации: {{ post.pub_date|date:'d E Y' }}</li>
+</ul>
+{% thumbnail post.image "100x100" crop="center" as im %}
+  <img class="image" src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
+{% endthumbnail %}
+<p>{{ post.text|linebreaks|truncatewords:90 }}</p>
+<a href={% url 'posts:post_detail' post.pk %}>подробная информация</a><br>
+{% if view_name != 'posts:group_list' %}
+  {% if post.group %} 
+    <a href={% url 'posts:group_list' post.group.slug %}>
+      {{ post.group.title }}
+    </a>
+  {% endif %}
+{% endif %}
+{% if not forloop.last %}<hr>{% endif %}
+{% endwith %}
