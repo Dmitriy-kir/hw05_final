@@ -94,3 +94,4 @@ class Follow(models.Model):
                 name='Dont_subscribe_twice'
             )
         ]
+

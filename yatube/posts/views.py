@@ -37,7 +37,6 @@ def group_posts(request, slug):
         context
     )
 
-
 def post_detail(request, post_id):
     post = get_object_or_404(Post, id=post_id)
     group = post.group
@@ -64,11 +63,9 @@ def profile(request, username):
     paginator = Paginator(author_list, LIMIT_POST)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    following = (
-                request.user.is_authenticated
+    following = (request.user.is_authenticated
                 and author.following.filter(
-                     user=request.user
-                     ).exists())
+                     user=request.user).exists())
     context = {
         'author': author,
         'page_obj': page_obj,
@@ -82,27 +79,29 @@ def profile(request, username):
     )
 
 
-
 @login_required
 def post_create(request):
-    form = PostForm(request.POST or None, files=request.FILES or None)
+    form = PostForm(
+        request.POST or None, 
+        files=request.FILES or None
+    )
     if form.is_valid():
         post = form.save(commit=False)
         post.author = request.user
         post.save()
         return redirect('posts:profile', request.user.username)
     return render(
-        request, 
+        request,
         'posts/create_edit_post.html', 
-        {'form': form}
+        {'form': form},
     )
 
 
 @login_required
 def post_edit(request, post_id):
     post = get_object_or_404(Post, id=post_id)
-    form = PostForm(request.POST or None, 
-    files=request.FILES or None, instance=post)
+    form = PostForm(request.POST or None,
+    files = request.FILES or None, instance=post)
     if form.is_valid():
         form.save()
         return redirect('posts:post_detail', post.id)
