@@ -66,7 +66,7 @@ def profile(request, username):
     page_obj = paginator.get_page(page_number)
     following = (request.user.is_authenticated
                 and author.following.filter(
-                     user=request.user,
+                     user=request.user
                 ).exists())
     context = {
         'author': author,
@@ -84,7 +84,7 @@ def profile(request, username):
 @login_required
 def post_create(request):
     form = PostForm(
-        request.POST or None, 
+        request.POST or None,
         files=request.FILES or None
     )
     if form.is_valid():
@@ -94,7 +94,7 @@ def post_create(request):
         return redirect('posts:profile', request.user.username)
     return render(
         request,
-        'posts/create_edit_post.html', 
+        'posts/create_edit_post.html',
         {'form': form}
     )
 
@@ -104,7 +104,7 @@ def post_edit(request, post_id):
     post = get_object_or_404(Post, id=post_id)
     form = PostForm(
         request.POST or None,
-        files = request.FILES or None, 
+        files = request.FILES or None,
         instance=post
     )
     if form.is_valid():
