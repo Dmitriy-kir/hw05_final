@@ -64,10 +64,9 @@ def profile(request, username):
     paginator = Paginator(author_list, LIMIT_POST)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    following = (
-                request.user.is_authenticated
+    following = (request.user.is_authenticated
                 and author.following.filter(
-                     user=request.user
+                user=request.user
                 ).exists())
     context = {
         'author': author,
@@ -106,7 +105,7 @@ def post_edit(request, post_id):
     form = PostForm(
         request.POST or None,
         files = request.FILES or None,
-        instance=post
+        instance=post,
     )
     if form.is_valid():
         form.save()
