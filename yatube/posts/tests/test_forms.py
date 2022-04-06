@@ -1,6 +1,7 @@
 from http import HTTPStatus
 
 from django.core.files.uploadedfile import SimpleUploadedFile
+
 from django.test import Client
 
 from ..models import Post
@@ -23,7 +24,7 @@ class TestForms(Fixture):
         self.uploaded = SimpleUploadedFile(
             name='test.gif',
             content=self.small_gif,
-            content_type='image/gif'
+            content_type='image/gif',
         )
 
     def test_check_new_post_created(self):

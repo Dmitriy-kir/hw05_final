@@ -61,7 +61,7 @@ class URLTests(TestCase):
 
     def test_urls_for_auth_author(self):
         """Проверка доступности редактирования поста, только автору"""
-        response = self.auth_client1.get('/posts/1/edit/') 
+        response = self.auth_client1.get('/posts/1/edit/')
         self.assertEqual(response.status_code, HTTPStatus.OK)
 
     def test_unexisting_page(self):
