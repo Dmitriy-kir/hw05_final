@@ -8,7 +8,6 @@ from .fixture import Fixture
 from django.urls import reverse
 
 
-
 class TestForms(Fixture):
     """Тестирование форм"""
     def setUp(self):
@@ -87,7 +86,8 @@ class TestForms(Fixture):
         )
         self.assertTrue(
             Comment.objects.filter(text=form_data['text'],
-            ).exists()) 
+            ).exists()
+        )
 
     def test_guest_user_can_add_comment(self):
         comment_count = Comment.objects.filter(post_id=1).count()
@@ -105,4 +105,5 @@ class TestForms(Fixture):
         )
         self.assertFalse(
             Comment.objects.filter(text=form_data['text'],
-            ).exists()) 
+            ).exists()
+        )

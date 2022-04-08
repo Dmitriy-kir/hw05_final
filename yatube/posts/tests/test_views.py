@@ -7,6 +7,7 @@ from ..models import Follow, Post
 from .fixture import Fixture
 from django.core.cache import cache
 
+
 class ViewsTests(Fixture):
     """Тестирование представлений"""
     def setUp(self):
