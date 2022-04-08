@@ -3,10 +3,9 @@ from django.conf import settings
 from django.core import paginator
 from django.test import Client
 from django.urls import reverse
-
 from ..models import Follow, Post
 from .fixture import Fixture
-
+from django.core.cache import cache
 
 class ViewsTests(Fixture):
     """Тестирование представлений"""
@@ -178,6 +177,9 @@ class ViewsTests(Fixture):
 
     def test_cached_index(self):
         """Проверка, что главная страница кэшируется"""
+        response_content_clear_cache = self.auth_client.get(
+            reverse('posts:index')
+        )
         post = Post.objects.create(
             text='Проверяем кэширование страницы',
             author=self.user1,
@@ -193,6 +195,11 @@ class ViewsTests(Fixture):
             cached.content,
             response.content
         )
+        response_content = self.auth_client.get(
+            reverse('posts:index')
+        )
+        cache.clear()
+        self.assertNotEqual(response_content, response_content_clear_cache)
 
     def test_auth_user_can_follow_and_unfollow(self):
         self.auth_client_2.get(

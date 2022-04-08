@@ -33,6 +33,7 @@ class URLTests(TestCase):
         )
         cls.expect_for_auth = {
             '/create/': 'posts/create_edit_post.html',
+            '/follow/': 'posts/follow.html',
         }
         cls.url_test_edit = f'/posts/{cls.post.id}/edit/'
 
@@ -68,6 +69,7 @@ class URLTests(TestCase):
         """Проверка несуществующей страницы"""
         response = self.guest_client.get('/posts/200/', follow=True)
         self.assertEqual(response.status_code, HTTPStatus.NOT_FOUND)
+        self.assertTemplateUsed(response, 'core/404.html')
 
     def test_template_for_all(self):
         """Шаблоны для гостя"""
@@ -82,6 +84,11 @@ class URLTests(TestCase):
             with self.subTest(adress=adress):
                 response = self.auth_client1.get(adress)
                 self.assertTemplateUsed(response, template)
+
+    def test_follow_user(self):
+        response = self.auth_client1.get("/follow/")
+        self.assertTemplateUsed(response, "posts/follow.html")
+        self.assertEqual(response.status_code, 200)
 
     def test_add_comment_only_auth_user(self):
         """Проверка, что комментировать
@@ -102,8 +109,3 @@ class URLTests(TestCase):
             response,
             f'/auth/login/?next=/posts/{self.post.id}/comment/'
         )
-
-    def test_404_get_custom_template(self):
-        response = self.guest_client.get('/nonexist-page/')
-        self.assertEqual(response.status_code, 404)
-        self.assertTemplateUsed(response, 'core/404.html')

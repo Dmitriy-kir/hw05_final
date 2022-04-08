@@ -3,15 +3,17 @@ from http import HTTPStatus
 from django.core.files.uploadedfile import SimpleUploadedFile
 
 from django.test import Client
-
-from ..models import Post
+from ..models import Post, Comment
 from .fixture import Fixture
+from django.urls import reverse
+
 
 
 class TestForms(Fixture):
     """Тестирование форм"""
     def setUp(self):
         self.auth_client = Client()
+        self.guest_client = Client()
         self.auth_client.force_login(self.user1)
         self.small_gif = (
             b'\x47\x49\x46\x38\x39\x61\x02\x00'
@@ -68,3 +70,39 @@ class TestForms(Fixture):
             form_data['group']
         )
         self.assertEqual(response.status_code, HTTPStatus.OK)
+
+    def test_auth_user_can_add_comment(self):
+        comment_count = Comment.objects.filter(post_id=1).count()
+        form_data = {
+            'text': 'Test comment'
+        }
+        self.auth_client.post(
+            reverse('posts:add_comment', kwargs={'post_id': 1}),
+            data=form_data,
+            follow=True,
+        )
+        self.assertEqual(
+            comment_count + 1,
+            Comment.objects.filter(post_id=1).count()
+        )
+        self.assertTrue(
+            Comment.objects.filter(text=form_data['text'],
+            ).exists()) 
+
+    def test_guest_user_can_add_comment(self):
+        comment_count = Comment.objects.filter(post_id=1).count()
+        form_data = {
+            'text': 'Test comment'
+        }
+        self.guest_client.post(
+            reverse('posts:add_comment', kwargs={'post_id': 1}),
+            data=form_data,
+            follow=True,
+        )
+        self.assertEqual(
+            comment_count,
+            Comment.objects.filter(post_id=1).count()
+        )
+        self.assertFalse(
+            Comment.objects.filter(text=form_data['text'],
+            ).exists()) 

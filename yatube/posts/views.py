@@ -6,7 +6,6 @@ from django.shortcuts import get_object_or_404, redirect, render
 
 from .forms import CommentForm, PostForm
 
-from .forms import PostForm
 from .models import Group, Post, User, Follow
 
 
@@ -49,8 +48,6 @@ def post_detail(request, post_id):
     comments = post.comments.all()
     context = {
         'post': post,
-        'group': group,
-        'author': author,
         'form': form,
         'comments': comments,
     }

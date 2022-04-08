@@ -6,6 +6,7 @@
 {% block content %}
 {% include 'includes/switcher.html' %}
   {% for post in page_obj %}
+  {% include 'includes/article.html' %}
     <ul>
       <li>
         Автор: {{ post.author.get_full_name }}
