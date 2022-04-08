@@ -42,8 +42,6 @@ def group_posts(request, slug):
 
 def post_detail(request, post_id):
     post = get_object_or_404(Post, id=post_id)
-    group = post.group
-    author = post.author
     form = CommentForm()
     comments = post.comments.all()
     context = {

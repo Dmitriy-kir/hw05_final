@@ -85,8 +85,10 @@ class TestForms(Fixture):
             Comment.objects.filter(post_id=1).count()
         )
         self.assertTrue(
-            Comment.objects.filter(text=form_data['text'],
-            ).exists())
+            Comment.objects.filter(
+                text=form_data['text'],
+            ).exists()
+        )
 
     def test_guest_user_can_add_comment(self):
         comment_count = Comment.objects.filter(post_id=1).count()
@@ -103,5 +105,7 @@ class TestForms(Fixture):
             Comment.objects.filter(post_id=1).count()
         )
         self.assertFalse(
-            Comment.objects.filter(text=form_data['text'],
-            ).exists())
+            Comment.objects.filter(
+                text=form_data['text'],
+            ).exists()
+        )
