@@ -1,12 +1,10 @@
 {% load thumbnail %}
 {% with request.resolver_match.view_name as view_name %}
 <ul>
-  <li>
     {% if view_name != 'posts:profile' %}
-    {% if post.author %}
+    <li>
     Автор: {{ post.author.get_full_name }}
     <a href={% url 'posts:profile' post.author %}>Все посты пользователя</a>
-    {% endif %}
     {% endif %}
   </li> 
   <li>Дата публикации: {{ post.pub_date|date:'d E Y' }}</li>

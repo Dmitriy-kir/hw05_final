@@ -178,7 +178,7 @@ class ViewsTests(Fixture):
 
     def test_cached_index(self):
         """Проверка, что главная страница кэшируется"""
-        response_content_clear_cache = self.auth_client.get(
+        response = self.auth_client.get(
             reverse('posts:index')
         )
         post = Post.objects.create(
@@ -196,11 +196,11 @@ class ViewsTests(Fixture):
             cached.content,
             response.content
         )
-        response_content = self.auth_client.get(
+        cache.clear()
+        response = self.auth_client.get(
             reverse('posts:index')
         )
-        cache.clear()
-        self.assertNotEqual(response_content, response_content_clear_cache)
+        self.assertNotEqual(cached.content, response.content)
 
     def test_auth_user_can_follow_and_unfollow(self):
         self.auth_client_2.get(
