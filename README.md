@@ -6,7 +6,7 @@
 Python 3.7
 Django Framework
 HTML
-CSS (Bootstrap 3)
+CSS
 
 # Запуск проекта в dev-режиме
 Разверните виртуальное окружение python -m venv venv.
