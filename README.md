@@ -11,7 +11,7 @@ CSS
 # Запуск проекта в dev-режиме
 Разверните виртуальное окружение python -m venv venv.
 Активируйте виртуальное окружение.
-Установите зависимости из файла requirements.txt.
+Установите зависимости
 pip install -r requirements.txt.
 В папке с файлом manage.py выполните команду запуска dev-сервера:
 python3 manage.py runserver.
